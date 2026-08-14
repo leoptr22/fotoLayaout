@@ -22,6 +22,8 @@ export default function Home() {
       id: `${file.name}-${file.lastModified}-${crypto.randomUUID()}`,
       name: file.name,
       url: URL.createObjectURL(file),
+      x: 50,
+      y: 50,
     }));
     setPhotos((current) => [...current, ...next]);
   };
@@ -42,6 +44,10 @@ export default function Home() {
       [copy[index], copy[target]] = [copy[target], copy[index]];
       return copy;
     });
+  };
+
+  const setPhotoPosition = (id: string, x: number, y: number) => {
+    setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, x, y } : photo));
   };
 
   const generatePdf = async () => {
@@ -73,9 +79,9 @@ export default function Home() {
       <div className="app-shell">
         <section className="controls-panel" aria-label="Configuración del álbum">
           <div className="intro-copy">
-            <span className="eyebrow">ESTUDIO DE COMPOSICIÓN</span>
-            <h1>Tus fotos.<br /><em>Una pieza única.</em></h1>
-            <p>Elegí una composición, sumá tus recuerdos y descargá una lámina Super A3 lista para imprimir.</p>
+            <span className="eyebrow">IMPRESIONES</span>
+            <h1>Armá tu plantilla<br /><em>Super A3</em></h1>
+            <p>Elegí una composición, cargá hasta 20 fotos y acomodá cada encuadre antes de generar el PDF listo para imprimir.</p>
           </div>
           <TemplatePicker selected={template} onSelect={setTemplate} />
           <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} onMove={movePhoto} />
@@ -88,7 +94,7 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · 329 × 483 MM</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} />
+            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} onPosition={setPhotoPosition} />
           </div>
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
         </section>
