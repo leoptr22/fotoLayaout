@@ -31,6 +31,7 @@ export default function Home() {
       zoom: 1,
       frameWidth: 100,
       frameHeight: 100,
+      shape: "rectangle" as const,
     }));
     setPhotos((current) => [...current, ...next]);
     if (!selectedId && next[0]) setSelectedId(next[0].id);
@@ -74,7 +75,7 @@ export default function Home() {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, frameWidth, frameHeight } : photo));
   };
 
-  const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "zoom" | "frameWidth" | "frameHeight">>) => {
+  const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "zoom" | "frameWidth" | "frameHeight" | "shape">>) => {
     if (!selectedId) return;
     setPhotos((current) => current.map((photo) => photo.id === selectedId ? { ...photo, ...changes } : photo));
   };
@@ -133,7 +134,7 @@ export default function Home() {
           <div className="sheet-stage">
             <SheetPreview ref={sheetRef} photos={photos} template={template} background={background} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onResize={setPhotoSize} onSwap={swapPhotos} />
           </div>
-          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
+          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onShape={(shape) => updateSelected({ shape })} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1, frameWidth: 100, frameHeight: 100, shape: "rectangle" })} />
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
         </section>
       </div>
