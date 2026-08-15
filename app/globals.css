@@ -17,3 +17,14 @@
 .preview-panel{background:rgba(231,238,238,.86);top:76px;height:calc(100vh - 76px);backdrop-filter:blur(10px)}
 @media(max-width:1000px){.preview-panel{top:0;height:790px}}
 @media(max-width:600px){.topbar{height:64px}.brand{width:175px;height:56px}.brand-logo{width:175px;height:70px}}
+
+/* Lámina Super A3: superficie máxima, solo título */
+.paper{background:#e9edef;padding:1.15%}
+.paper-title{border:0;padding:0 0 1.2%;margin:0 0 .9%;min-height:3.6%;align-items:center}
+.paper-title h3{font-size:clamp(11px,1.25vw,18px)}
+.photo-composition{gap:.55%}
+.paper-head,.paper-foot,.photo-cell figcaption{display:none}
+.template-polaroid .photo-composition{gap:.75%;padding:.25%}
+.template-polaroid .photo-cell{padding:3.5% 3.5% 13%;box-shadow:0 1px 5px #17343b26}
+.template-gallery .photo-composition{gap:.8%;padding:.25%}
+.template-film .photo-composition{gap:.7%;padding:1%}

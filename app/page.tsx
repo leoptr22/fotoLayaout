@@ -61,7 +61,8 @@ export default function Home() {
       const canvas = await html2canvas(sheetRef.current, {
         scale: 2,
         useCORS: true,
-        backgroundColor: "#f7f3eb",
+        backgroundColor: "#e9edef",
+        onclone: (documentClone) => documentClone.querySelectorAll(".drag-hint").forEach((element) => element.remove()),
       });
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: [329, 483] });
       pdf.addImage(canvas.toDataURL("image/jpeg", 0.94), "JPEG", 0, 0, 329, 483);

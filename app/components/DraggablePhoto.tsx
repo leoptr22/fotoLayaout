@@ -13,6 +13,6 @@ export function DraggablePhoto({ photo, index, fit, onPosition }: { photo: Photo
     onPointerUp={() => { dragging.current = false; }} onPointerCancel={() => { dragging.current = false; }}
     onKeyDown={(event) => { const d = event.shiftKey ? 10 : 3; if (event.key === "ArrowLeft") onPosition(photo.id, clamp(photo.x - d), photo.y); if (event.key === "ArrowRight") onPosition(photo.id, clamp(photo.x + d), photo.y); if (event.key === "ArrowUp") onPosition(photo.id, photo.x, clamp(photo.y - d)); if (event.key === "ArrowDown") onPosition(photo.id, photo.x, clamp(photo.y + d)); }}>
     <img draggable={false} src={photo.url} alt={photo.name} style={{ objectFit: fit, objectPosition: `${photo.x}% ${photo.y}%` }} />
-    <span className="drag-hint">MOVER</span><figcaption>{String(index + 1).padStart(2, "0")}</figcaption>
+    <span className="drag-hint">MOVER</span>
   </figure>;
 }
