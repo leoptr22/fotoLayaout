@@ -27,6 +27,8 @@ export default function Home() {
       x: 50,
       y: 50,
       zoom: 1,
+      frameWidth: 100,
+      frameHeight: 100,
     }));
     setPhotos((current) => [...current, ...next]);
     if (!selectedId && next[0]) setSelectedId(next[0].id);
@@ -66,7 +68,11 @@ export default function Home() {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, x, y } : photo));
   };
 
-  const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "zoom">>) => {
+  const setPhotoSize = (id: string, frameWidth: number, frameHeight: number) => {
+    setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, frameWidth, frameHeight } : photo));
+  };
+
+  const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "zoom" | "frameWidth" | "frameHeight">>) => {
     if (!selectedId) return;
     setPhotos((current) => current.map((photo) => photo.id === selectedId ? { ...photo, ...changes } : photo));
   };
@@ -85,6 +91,7 @@ export default function Home() {
         backgroundColor: "#e9edef",
         onclone: (documentClone) => {
           documentClone.querySelectorAll(".drag-hint").forEach((element) => element.remove());
+          documentClone.querySelectorAll(".resize-handle").forEach((element) => element.remove());
           documentClone.querySelectorAll(".selected-photo").forEach((element) => element.classList.remove("selected-photo"));
         },
       });
@@ -121,9 +128,9 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · 329 × 483 MM</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onSwap={swapPhotos} />
+            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onResize={setPhotoSize} onSwap={swapPhotos} />
           </div>
-          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1 })} />
+          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
         </section>
       </div>
