@@ -3,7 +3,6 @@ export const templates = [
   { id: "polaroid", name: "Polaroid", mark: "◇", note: "Nostalgia casual" },
   { id: "editorial", name: "Editorial", mark: "▥", note: "Ritmo de revista" },
   { id: "mosaic", name: "Mosaico", mark: "▤", note: "Dinámico" },
-  { id: "film", name: "Tira", mark: "▧", note: "Cinematográfico" },
   { id: "gallery", name: "Galería", mark: "▩", note: "Con aire" },
   { id: "organic", name: "Orgánica", mark: "◌", note: "Libre y suave" },
   { id: "cover", name: "Portada", mark: "▣", note: "Una foto protagonista" },
