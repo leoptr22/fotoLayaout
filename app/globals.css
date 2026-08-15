@@ -55,6 +55,10 @@
 .shape-control{order:4;flex-basis:100%;display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:8px}.shape-control>strong{font-size:8px;text-transform:uppercase;letter-spacing:.06em}.shape-options{display:grid;grid-template-columns:repeat(8,minmax(54px,1fr));gap:5px;flex:1}.shape-options button{min-height:43px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:4px}.shape-options button:hover,.shape-options button.active{border-color:var(--cyan);background:#eefafb;color:var(--cyan)}.shape-options button.active{box-shadow:inset 0 -3px var(--cyan)}.shape-options span{font-size:6px;font-weight:700}.shape-icon{display:block;width:18px;height:18px;background:currentColor}.shape-icon-rounded{border-radius:5px}.shape-icon-circle{border-radius:50%}.shape-icon-heart{clip-path:polygon(50% 92%,8% 53%,3% 31%,10% 13%,27% 5%,42% 12%,50% 25%,58% 12%,73% 5%,90% 13%,97% 31%,92% 53%)}.shape-icon-diamond{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}.shape-icon-hexagon{clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%)}.shape-icon-star{clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 94%,50% 72%,21% 94%,32% 57%,2% 35%,39% 35%)}.shape-icon-arch{border-radius:50% 50% 3px 3px}.shape-icon-rectangle{width:22px;height:15px}
 @media(max-width:700px){.shape-options{grid-template-columns:repeat(4,1fr)}.shape-control{align-items:flex-start;flex-direction:column}}
 
+/* El estado de edición nunca debe aparecer en el PDF */
+.paper.is-exporting .photo-cell,.paper.is-exporting .photo-cell:focus{outline:none!important}
+.paper.is-exporting .selected-photo::before,.paper.is-exporting .selected-photo::after,.paper.is-exporting .drag-hint,.paper.is-exporting .resize-handle{display:none!important}
+
 /* Hoja Super A3 ampliada dentro del visor */
 .sheet-stage{display:block;overflow:auto;overscroll-behavior:contain;padding:8px 6px 18px;scrollbar-gutter:stable}
 .paper{width:min(96%,900px);height:auto;max-height:none;min-height:0;margin:0 auto;flex:none}

@@ -82,13 +82,15 @@ export default function Home() {
 
   const generatePdf = async () => {
     if (!sheetRef.current || !photos.length) return;
+    const sheet = sheetRef.current;
     setBusy(true);
+    sheet.classList.add("is-exporting");
     try {
       const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
         import("html2canvas"),
         import("jspdf"),
       ]);
-      const canvas = await html2canvas(sheetRef.current, {
+      const canvas = await html2canvas(sheet, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#e9edef",
@@ -102,6 +104,7 @@ export default function Home() {
       pdf.addImage(canvas.toDataURL("image/jpeg", 0.94), "JPEG", 0, 0, 329, 483);
       pdf.save(`${title.trim().replace(/\s+/g, "-").toLowerCase() || "fotoforma"}.pdf`);
     } finally {
+      sheet.classList.remove("is-exporting");
       setBusy(false);
     }
   };
