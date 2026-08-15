@@ -7,6 +7,7 @@ import { PhotoUploader, type PhotoItem } from "./components/PhotoUploader";
 import { EditorToolbar } from "./components/EditorToolbar";
 import { SheetPreview } from "./components/SheetPreview";
 import { ExportBar } from "./components/ExportBar";
+import { PhotoAdjuster } from "./components/PhotoAdjuster";
 
 export default function Home() {
   const [template, setTemplate] = useState("classic");
@@ -14,6 +15,7 @@ export default function Home() {
   const [title, setTitle] = useState("Nuestros momentos");
   const [fit, setFit] = useState<"cover" | "contain">("cover");
   const [busy, setBusy] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
 
   const addPhotos = (files: File[]) => {
@@ -24,8 +26,10 @@ export default function Home() {
       url: URL.createObjectURL(file),
       x: 50,
       y: 50,
+      zoom: 1,
     }));
     setPhotos((current) => [...current, ...next]);
+    if (!selectedId && next[0]) setSelectedId(next[0].id);
   };
 
   const removePhoto = (id: string) => {
@@ -34,6 +38,7 @@ export default function Home() {
       if (target) URL.revokeObjectURL(target.url);
       return current.filter((photo) => photo.id !== id);
     });
+    if (selectedId === id) setSelectedId(photos.find((photo) => photo.id !== id)?.id ?? null);
   };
 
   const movePhoto = (index: number, direction: -1 | 1) => {
@@ -50,6 +55,11 @@ export default function Home() {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, x, y } : photo));
   };
 
+  const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "zoom">>) => {
+    if (!selectedId) return;
+    setPhotos((current) => current.map((photo) => photo.id === selectedId ? { ...photo, ...changes } : photo));
+  };
+
   const generatePdf = async () => {
     if (!sheetRef.current || !photos.length) return;
     setBusy(true);
@@ -62,7 +72,10 @@ export default function Home() {
         scale: 2,
         useCORS: true,
         backgroundColor: "#e9edef",
-        onclone: (documentClone) => documentClone.querySelectorAll(".drag-hint").forEach((element) => element.remove()),
+        onclone: (documentClone) => {
+          documentClone.querySelectorAll(".drag-hint").forEach((element) => element.remove());
+          documentClone.querySelectorAll(".selected-photo").forEach((element) => element.classList.remove("selected-photo"));
+        },
       });
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: [329, 483] });
       pdf.addImage(canvas.toDataURL("image/jpeg", 0.94), "JPEG", 0, 0, 329, 483);
@@ -73,6 +86,8 @@ export default function Home() {
   };
 
   const selected = templates.find((item) => item.id === template) ?? templates[0];
+  const selectedIndex = photos.findIndex((photo) => photo.id === selectedId);
+  const selectedPhoto = selectedIndex >= 0 ? photos[selectedIndex] : undefined;
 
   return (
     <main>
@@ -95,8 +110,9 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · 329 × 483 MM</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} onPosition={setPhotoPosition} />
+            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} />
           </div>
+          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onMove={(direction) => movePhoto(selectedIndex, direction)} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1 })} />
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
         </section>
       </div>
