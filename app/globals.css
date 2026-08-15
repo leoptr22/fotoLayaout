@@ -45,6 +45,13 @@
 .drag-instruction{display:flex;align-items:center;gap:8px;min-width:175px;padding:6px 10px;background:#eef9fa;border:1px dashed var(--cyan);color:var(--ink)}.drag-instruction>div{display:flex;flex-direction:column}.drag-instruction strong{font-size:9px;text-transform:uppercase}.drag-instruction span{font-size:8px;color:var(--muted);margin-top:2px}
 @media(max-width:1000px){.app-shell{grid-template-columns:1fr}}
 
+/* Hoja Super A3 ampliada dentro del visor */
+.sheet-stage{display:block;overflow:auto;overscroll-behavior:contain;padding:8px 6px 18px;scrollbar-gutter:stable}
+.paper{width:min(96%,900px);height:auto;max-height:none;min-height:0;margin:0 auto;flex:none}
+@media(max-width:1000px){.sheet-stage{overflow:auto}.paper{width:min(94%,720px);height:auto;max-height:none}}
+@media(max-width:600px){.paper{width:min(96%,560px);height:auto}}
+@media print{.paper{width:329mm;height:483mm;max-height:none;margin:0}.sheet-stage{overflow:visible;padding:0}}
+
 /* Área de trabajo 25/75 y tiradores para dimensionar */
 .app-shell{grid-template-columns:minmax(300px,1fr) minmax(0,3fr);max-width:none;width:100%}
 .controls-panel{padding-left:clamp(18px,2vw,32px);padding-right:clamp(18px,2vw,32px)}
