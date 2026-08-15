@@ -52,6 +52,15 @@
 @media(max-width:600px){.paper{width:min(96%,560px);height:auto}}
 @media print{.paper{width:329mm;height:483mm;max-height:none;margin:0}.sheet-stage{overflow:visible;padding:0}}
 
+/* Doce composiciones: Editorial y Mosaico deliberadamente distintos */
+.template-editorial .photo-composition{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(8,1fr);gap:.7%}.template-editorial .photo-cell:first-child{grid-column:span 2;grid-row:span 2}
+.template-mosaic .photo-composition{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);gap:.45%}.template-mosaic .photo-cell:nth-child(7n+1){grid-column:span 2;grid-row:span 2}
+.template-cover .photo-composition{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:.7%}.template-cover .photo-cell:first-child{grid-column:span 2;grid-row:span 2}
+.template-panorama .photo-composition{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(10,1fr);gap:.65%}
+.template-contact .photo-composition{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:.25%;background:#d6dcde;padding:.35%}.template-contact .photo-cell{border:1px solid #fff}
+.template-portraits .photo-composition{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:1.1%}.template-portraits .photo-cell{border:2px solid #fff;box-shadow:0 1px 4px #0002}
+.template-album .photo-composition{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(7,1fr);gap:1.8%;padding:1.5% 4%}.template-album .photo-cell{border:4px solid #fff;box-shadow:0 2px 7px #17343b1c}
+
 /* Área de trabajo 25/75 y tiradores para dimensionar */
 .app-shell{grid-template-columns:minmax(300px,1fr) minmax(0,3fr);max-width:none;width:100%}
 .controls-panel{padding-left:clamp(18px,2vw,32px);padding-right:clamp(18px,2vw,32px)}
