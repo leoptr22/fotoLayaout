@@ -28,6 +28,8 @@ export default function Home() {
       url: URL.createObjectURL(file),
       x: 50,
       y: 50,
+      moveX: 0,
+      moveY: 0,
       zoom: 1,
       frameWidth: 100,
       frameHeight: 100,
@@ -56,26 +58,15 @@ export default function Home() {
     });
   };
 
-  const swapPhotos = (sourceId: string, targetId: string) => {
-    setPhotos((current) => {
-      const source = current.findIndex((photo) => photo.id === sourceId);
-      const target = current.findIndex((photo) => photo.id === targetId);
-      if (source < 0 || target < 0 || source === target) return current;
-      const copy = [...current];
-      [copy[source], copy[target]] = [copy[target], copy[source]];
-      return copy;
-    });
-  };
-
   const setPhotoPosition = (id: string, x: number, y: number) => {
-    setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, x, y } : photo));
+    setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, moveX: x, moveY: y } : photo));
   };
 
   const setPhotoSize = (id: string, frameWidth: number, frameHeight: number) => {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, frameWidth, frameHeight } : photo));
   };
 
-  const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "zoom" | "frameWidth" | "frameHeight" | "shape">>) => {
+  const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "moveX" | "moveY" | "zoom" | "frameWidth" | "frameHeight" | "shape">>) => {
     if (!selectedId) return;
     setPhotos((current) => current.map((photo) => photo.id === selectedId ? { ...photo, ...changes } : photo));
   };
@@ -135,9 +126,9 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · 329 × 483 MM</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={photos} template={template} background={background} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onResize={setPhotoSize} onSwap={swapPhotos} />
+            <SheetPreview ref={sheetRef} photos={photos} template={template} background={background} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onResize={setPhotoSize} />
           </div>
-          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onShape={(shape) => updateSelected({ shape })} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1, frameWidth: 100, frameHeight: 100, shape: "rectangle" })} />
+          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onShape={(shape) => updateSelected({ shape })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100, shape: "rectangle" })} />
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
         </section>
       </div>

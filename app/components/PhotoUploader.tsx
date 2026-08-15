@@ -2,7 +2,7 @@ import { ArrowLeft, ArrowRight, ImagePlus, Trash2 } from "lucide-react";
 import { useRef } from "react";
 
 export type PhotoShape = "rectangle" | "rounded" | "circle" | "heart" | "diamond" | "hexagon" | "star" | "arch";
-export type PhotoItem = { id: string; name: string; url: string; x: number; y: number; zoom: number; frameWidth: number; frameHeight: number; shape: PhotoShape };
+export type PhotoItem = { id: string; name: string; url: string; x: number; y: number; moveX: number; moveY: number; zoom: number; frameWidth: number; frameHeight: number; shape: PhotoShape };
 
 export function PhotoUploader({ photos, onAdd, onRemove, onMove }: { photos: PhotoItem[]; onAdd: (files: File[]) => void; onRemove: (id: string) => void; onMove: (index: number, direction: -1 | 1) => void }) {
   const input = useRef<HTMLInputElement>(null);
