@@ -51,6 +51,17 @@ export default function Home() {
     });
   };
 
+  const swapPhotos = (sourceId: string, targetId: string) => {
+    setPhotos((current) => {
+      const source = current.findIndex((photo) => photo.id === sourceId);
+      const target = current.findIndex((photo) => photo.id === targetId);
+      if (source < 0 || target < 0 || source === target) return current;
+      const copy = [...current];
+      [copy[source], copy[target]] = [copy[target], copy[source]];
+      return copy;
+    });
+  };
+
   const setPhotoPosition = (id: string, x: number, y: number) => {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, x, y } : photo));
   };
@@ -110,9 +121,9 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · 329 × 483 MM</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} />
+            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onSwap={swapPhotos} />
           </div>
-          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onMove={(direction) => movePhoto(selectedIndex, direction)} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1 })} />
+          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1 })} />
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
         </section>
       </div>

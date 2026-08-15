@@ -38,3 +38,9 @@
 @media(max-width:1150px){.app-shell{grid-template-columns:minmax(350px,42%) minmax(0,58%)}.photo-adjuster{flex-wrap:wrap}.adjuster-photo{flex:1}.zoom-control{order:3;flex-basis:100%}}
 @media(max-width:1000px){.app-shell{grid-template-columns:1fr}.preview-panel{height:900px}.photo-adjuster{flex-wrap:nowrap}.zoom-control{order:initial;flex-basis:auto}}
 @media(max-width:650px){.preview-panel{height:780px}.photo-adjuster{flex-wrap:wrap}.adjuster-photo{min-width:130px}.zoom-control{order:3;flex-basis:100%}.reset-photo{margin-left:auto}.preview-heading .size-badge{display:none}}
+
+/* División 50/50 y reubicación directa por arrastre */
+.app-shell{grid-template-columns:minmax(380px,1fr) minmax(0,1fr)}
+.photo-cell.selected-photo{cursor:move}.photo-cell.selected-photo .drag-hint{font-size:4.5px}
+.drag-instruction{display:flex;align-items:center;gap:8px;min-width:175px;padding:6px 10px;background:#eef9fa;border:1px dashed var(--cyan);color:var(--ink)}.drag-instruction>div{display:flex;flex-direction:column}.drag-instruction strong{font-size:9px;text-transform:uppercase}.drag-instruction span{font-size:8px;color:var(--muted);margin-top:2px}
+@media(max-width:1000px){.app-shell{grid-template-columns:1fr}}
