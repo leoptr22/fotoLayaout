@@ -61,6 +61,17 @@
 .template-portraits .photo-composition{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:1.1%}.template-portraits .photo-cell{border:2px solid #fff;box-shadow:0 1px 4px #0002}
 .template-album .photo-composition{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(7,1fr);gap:1.8%;padding:1.5% 4%}.template-album .photo-cell{border:4px solid #fff;box-shadow:0 2px 7px #17343b1c}
 
+/* Fondos predeterminados */
+.background-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.background-option{border:1px solid var(--line);background:#fff;padding:6px;cursor:pointer;text-align:left}.background-option i{display:block;width:100%;aspect-ratio:1.45;border:1px solid #d7dfe0;margin-bottom:5px}.background-option span{font-size:8px;font-weight:700}.background-option.selected{border:2px solid var(--cyan);padding:5px;box-shadow:inset 3px 0 var(--cyan)}
+.bg-swatch-gray i,.paper.bg-gray{background:#e9edef}.bg-swatch-white i,.paper.bg-white{background:#fff}.bg-swatch-cream i,.paper.bg-cream{background:#f5edda}.bg-swatch-rose i,.paper.bg-rose{background:#f6e5ec}.bg-swatch-sky i,.paper.bg-sky{background:#e2f2f5}.bg-swatch-charcoal i,.paper.bg-charcoal{background:#26383e}.bg-swatch-dots i,.paper.bg-dots{background-color:#edf1f1;background-image:radial-gradient(#a9b9bc 1px,transparent 1px);background-size:14px 14px}.bg-swatch-cmyk i,.paper.bg-cmyk{background-color:#f7f8f8;background-image:radial-gradient(circle at 8% 8%,#f3347933 0 9%,transparent 10%),radial-gradient(circle at 92% 10%,#00aee733 0 11%,transparent 12%),radial-gradient(circle at 88% 92%,#f7bd1240 0 13%,transparent 14%)}
+.paper.bg-charcoal .paper-title h3{color:#fff}.paper.bg-charcoal .empty-sheet{color:#dce5e6;border-color:#839398}
+
+/* Composiciones con fotografías grandes, pequeñas y formas variadas */
+.template-cover .photo-composition{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:.7%}.template-cover .photo-cell:first-child{grid-column:span 3;grid-row:span 3}.template-cover .photo-cell:nth-child(7){grid-column:span 2;grid-row:span 2}
+.template-organic .photo-composition{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:.8%}.template-organic .photo-cell:first-child{grid-column:span 3;grid-row:span 2;border-radius:42% 58% 48% 52%/58% 42% 58% 42%}.template-organic .photo-cell:nth-child(5),.template-organic .photo-cell:nth-child(10){grid-column:span 2;grid-row:span 2;border-radius:50%}
+.template-album .photo-composition{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(6,1fr);gap:1.4%;padding:1.5% 3%}.template-album .photo-cell:first-child{grid-column:span 2;grid-row:span 2}.template-album .photo-cell:nth-child(4n){border-radius:12px}
+@media(max-width:1300px) and (min-width:1001px){.background-grid{grid-template-columns:repeat(2,1fr)}}
+
 /* Área de trabajo 25/75 y tiradores para dimensionar */
 .app-shell{grid-template-columns:minmax(300px,1fr) minmax(0,3fr);max-width:none;width:100%}
 .controls-panel{padding-left:clamp(18px,2vw,32px);padding-right:clamp(18px,2vw,32px)}

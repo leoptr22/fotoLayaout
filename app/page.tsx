@@ -8,6 +8,7 @@ import { EditorToolbar } from "./components/EditorToolbar";
 import { SheetPreview } from "./components/SheetPreview";
 import { ExportBar } from "./components/ExportBar";
 import { PhotoAdjuster } from "./components/PhotoAdjuster";
+import { BackgroundPicker } from "./components/BackgroundPicker";
 
 export default function Home() {
   const [template, setTemplate] = useState("classic");
@@ -16,6 +17,7 @@ export default function Home() {
   const [fit, setFit] = useState<"cover" | "contain">("cover");
   const [busy, setBusy] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [background, setBackground] = useState("gray");
   const sheetRef = useRef<HTMLDivElement>(null);
 
   const addPhotos = (files: File[]) => {
@@ -120,6 +122,7 @@ export default function Home() {
           <TemplatePicker selected={template} onSelect={setTemplate} />
           <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} onMove={movePhoto} />
           <EditorToolbar title={title} onTitle={setTitle} fit={fit} onFit={setFit} />
+          <BackgroundPicker selected={background} onSelect={setBackground} />
         </section>
 
         <section className="preview-panel" aria-label="Vista previa">
@@ -128,7 +131,7 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · 329 × 483 MM</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={photos} template={template} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onResize={setPhotoSize} onSwap={swapPhotos} />
+            <SheetPreview ref={sheetRef} photos={photos} template={template} background={background} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onResize={setPhotoSize} onSwap={swapPhotos} />
           </div>
           <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
