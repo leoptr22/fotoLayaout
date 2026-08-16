@@ -6,8 +6,13 @@ const display = Cormorant_Garamond({ variable: "--font-display", subsets: ["lati
 const sans = DM_Sans({ variable: "--font-sans", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Fotoforma — Componé tus recuerdos",
+  title: "Arma tus fotos - Rojas Impresiones",
   description: "Creá composiciones fotográficas Super A3 y descargalas en PDF.",
+  icons: {
+    icon: "/rojas-logo.png",
+    shortcut: "/rojas-logo.png",
+    apple: "/rojas-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
