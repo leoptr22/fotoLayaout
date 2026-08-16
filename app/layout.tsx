@@ -9,9 +9,9 @@ export const metadata: Metadata = {
   title: "Arma tus fotos - Rojas Impresiones",
   description: "Creá composiciones fotográficas Super A3 y descargalas en PDF.",
   icons: {
-    icon: "/rojas-logo.png",
-    shortcut: "/rojas-logo.png",
-    apple: "/rojas-logo.png",
+    icon: "/rojas-icon.png",
+    shortcut: "/rojas-icon.png",
+    apple: "/rojas-icon.png",
   },
 };
 
