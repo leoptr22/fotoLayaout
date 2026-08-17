@@ -168,9 +168,9 @@ export default function Home() {
           </div>
           <TemplatePicker selected={template} onSelect={setTemplate} />
           <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} onMove={movePhoto} onCopies={setCopies} />
+          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} cropMarks={cropMarks} bleed={bleed} onCropMarks={setCropMarks} onBleed={setBleed} preflight={preflight} onAutoArrange={autoArrange} />
           <EditorToolbar title={title} onTitle={setTitle} fit={fit} onFit={setFit} />
           <BackgroundPicker selected={background} onSelect={setBackground} />
-          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} cropMarks={cropMarks} bleed={bleed} onCropMarks={setCropMarks} onBleed={setBleed} preflight={preflight} onAutoArrange={autoArrange} />
         </section>
 
         <section className="preview-panel" aria-label="Vista previa">
