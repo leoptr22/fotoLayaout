@@ -52,6 +52,10 @@
 .privacy-note{margin-left:auto;display:flex;align-items:center;gap:7px;color:var(--green);padding:7px 10px}.privacy-note>span{display:flex;flex-direction:column}.privacy-note strong{font-size:9px}.privacy-note small{font-size:7px;color:var(--muted)}.new-job-button{display:flex;align-items:center;gap:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:10px 13px;font-size:9px;font-weight:800;cursor:pointer}.new-job-button:hover{background:var(--cyan);border-color:var(--cyan)}
 @media(max-width:720px){.privacy-note{display:none}.new-job-button{margin-left:auto}.brand{width:165px}.brand-logo{width:165px}}
 
+/* Dos acciones de arrastre claras: mover el marco o ajustar la imagen */
+.edit-mode-control{display:grid;grid-template-columns:1fr 1fr;gap:5px;min-width:310px}.edit-mode-control button{border:1px solid var(--line);background:#fff;display:flex;align-items:center;gap:7px;text-align:left;padding:7px 9px;cursor:pointer}.edit-mode-control button.active{background:#eaf8fa;border-color:var(--cyan);color:var(--cyan);box-shadow:inset 0 -3px var(--cyan)}.edit-mode-control span{display:flex;flex-direction:column}.edit-mode-control strong{font-size:8px}.edit-mode-control small{font-size:6px;color:var(--muted);margin-top:2px}.photo-cell.mode-crop{cursor:crosshair}.photo-cell.mode-crop .resize-handle{display:none}.photo-cell.mode-crop.selected-photo::before{content:"MODO ENCUADRE"}
+@media(max-width:700px){.edit-mode-control{min-width:100%;grid-template-columns:1fr}}
+
 /* Hoja Super A3 ampliada dentro del visor */
 .sheet-stage{display:block;overflow:auto;overscroll-behavior:contain;padding:8px 6px 18px;scrollbar-gutter:stable}
 .paper{width:min(96%,900px);height:auto;max-height:none;min-height:0;margin:0 auto;flex:none}

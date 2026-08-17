@@ -18,6 +18,7 @@ export default function Home() {
   const [busy, setBusy] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [background, setBackground] = useState("gray");
+  const [editMode, setEditMode] = useState<"move" | "crop">("move");
   const sheetRef = useRef<HTMLDivElement>(null);
 
   const addPhotos = (files: File[]) => {
@@ -61,6 +62,10 @@ export default function Home() {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, moveX: x, moveY: y } : photo));
   };
 
+  const setPhotoCrop = (id: string, x: number, y: number) => {
+    setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, x, y } : photo));
+  };
+
   const setPhotoSize = (id: string, frameWidth: number, frameHeight: number) => {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, frameWidth, frameHeight } : photo));
   };
@@ -79,6 +84,7 @@ export default function Home() {
     setTitle("Nuestros momentos");
     setFit("cover");
     setBackground("gray");
+    setEditMode("move");
   };
 
   const generatePdf = async () => {
@@ -136,9 +142,9 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · 329 × 483 MM</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={photos} template={template} background={background} title={title} fit={fit} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onResize={setPhotoSize} />
+            <SheetPreview ref={sheetRef} photos={photos} template={template} background={background} title={title} fit={fit} editMode={editMode} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onCrop={setPhotoCrop} onResize={setPhotoSize} />
           </div>
-          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
+          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} mode={editMode} onMode={setEditMode} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
           <ExportBar count={photos.length} busy={busy} onExport={generatePdf} />
         </section>
       </div>
