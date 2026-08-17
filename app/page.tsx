@@ -21,7 +21,6 @@ export default function Home() {
   const [background, setBackground] = useState("gray");
   const [editMode, setEditMode] = useState<"move" | "crop">("move");
   const [preset, setPreset] = useState("10x15");
-  const [cropMarks, setCropMarks] = useState(true);
   const [bleed, setBleed] = useState(false);
   const [pageIndex, setPageIndex] = useState(0);
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -97,7 +96,6 @@ export default function Home() {
     setBackground("gray");
     setEditMode("move");
     setPreset("10x15");
-    setCropMarks(true);
     setBleed(false);
     setPageIndex(0);
   };
@@ -108,11 +106,7 @@ export default function Home() {
   const currentPreset = printPresets.find((item) => item.id === preset) ?? printPresets[0];
   const minPixels = Math.round(Math.max(currentPreset.width, currentPreset.height) / 25.4 * 180);
   const lowResolution = photos.filter((photo) => photo.pixelWidth && Math.max(photo.pixelWidth, photo.pixelHeight) < minPixels);
-  const preflight = [
-    photos.length ? { level: "ok" as const, text: `${expandedPhotos.length} copias distribuidas en ${sheets} hoja${sheets === 1 ? "" : "s"}.` } : { level: "error" as const, text: "Faltan fotografías para imprimir." },
-    lowResolution.length ? { level: "warn" as const, text: `${lowResolution.length} foto${lowResolution.length === 1 ? "" : "s"} podría verse pixelada en ${currentPreset.name}.` } : { level: "ok" as const, text: "Resolución adecuada para el tamaño elegido." },
-    { level: "ok" as const, text: cropMarks ? "Guías de corte activadas." : "Composición sin guías de corte." },
-  ];
+  const preflight = lowResolution.map((photo) => ({ level: "warn" as const, text: `${photo.name}: resolución insuficiente para ${currentPreset.name} (${photo.pixelWidth} × ${photo.pixelHeight} px).` }));
   const hasErrors = preflight.some((item) => item.level === "error");
 
   const autoArrange = () => {
@@ -168,7 +162,7 @@ export default function Home() {
           </div>
           <TemplatePicker selected={template} onSelect={setTemplate} />
           <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} onMove={movePhoto} onCopies={setCopies} />
-          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} cropMarks={cropMarks} bleed={bleed} onCropMarks={setCropMarks} onBleed={setBleed} preflight={preflight} onAutoArrange={autoArrange} />
+          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} bleed={bleed} onBleed={setBleed} preflight={preflight} onAutoArrange={autoArrange} />
           <EditorToolbar title={title} onTitle={setTitle} fit={fit} onFit={setFit} />
           <BackgroundPicker selected={background} onSelect={setBackground} />
         </section>
@@ -179,7 +173,7 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · HOJA {pageIndex + 1}/{sheets}</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={visiblePhotos} template={template} background={background} title={title} fit={fit} editMode={editMode} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onCrop={setPhotoCrop} onResize={setPhotoSize} cropMarks={cropMarks} bleed={bleed} />
+            <SheetPreview ref={sheetRef} photos={visiblePhotos} template={template} background={background} title={title} fit={fit} editMode={editMode} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onCrop={setPhotoCrop} onResize={setPhotoSize} bleed={bleed} />
           </div>
           {sheets > 1 && <div className="page-nav"><button disabled={!pageIndex} onClick={() => setPageIndex((value) => value - 1)}>Hoja anterior</button><span>{pageIndex + 1} de {sheets}</span><button disabled={pageIndex >= sheets - 1} onClick={() => setPageIndex((value) => value + 1)}>Hoja siguiente</button></div>}
           <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} mode={editMode} onMode={setEditMode} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
