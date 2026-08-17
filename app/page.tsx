@@ -9,7 +9,7 @@ import { SheetPreview } from "./components/SheetPreview";
 import { ExportBar } from "./components/ExportBar";
 import { PhotoAdjuster } from "./components/PhotoAdjuster";
 import { BackgroundPicker } from "./components/BackgroundPicker";
-import { OperationsPanel, printPresets } from "./components/OperationsPanel";
+import { OperationsPanel } from "./components/OperationsPanel";
 
 export default function Home() {
   const [template, setTemplate] = useState("classic");
@@ -103,11 +103,6 @@ export default function Home() {
   const expandedPhotos = useMemo(() => photos.flatMap((photo) => Array.from({ length: photo.copies }, (_, copy) => ({ ...photo, instanceId: `${photo.id}-${copy}` }))), [photos]);
   const sheets = Math.max(1, Math.ceil(expandedPhotos.length / 20));
   const visiblePhotos = expandedPhotos.slice(pageIndex * 20, pageIndex * 20 + 20);
-  const currentPreset = printPresets.find((item) => item.id === preset) ?? printPresets[0];
-  const minPixels = Math.round(Math.max(currentPreset.width, currentPreset.height) / 25.4 * 180);
-  const lowResolution = photos.filter((photo) => photo.pixelWidth && Math.max(photo.pixelWidth, photo.pixelHeight) < minPixels);
-  const preflight = lowResolution.map((photo) => ({ level: "warn" as const, text: `${photo.name}: resolución insuficiente para ${currentPreset.name} (${photo.pixelWidth} × ${photo.pixelHeight} px).` }));
-  const hasErrors = preflight.some((item) => item.level === "error");
 
   const autoArrange = () => {
     const portraitCount = photos.filter((photo) => photo.pixelHeight > photo.pixelWidth).length;
@@ -162,7 +157,7 @@ export default function Home() {
           </div>
           <TemplatePicker selected={template} onSelect={setTemplate} />
           <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} onMove={movePhoto} onCopies={setCopies} />
-          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} bleed={bleed} onBleed={setBleed} preflight={preflight} onAutoArrange={autoArrange} />
+          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} bleed={bleed} onBleed={setBleed} onAutoArrange={autoArrange} />
           <EditorToolbar title={title} onTitle={setTitle} fit={fit} onFit={setFit} />
           <BackgroundPicker selected={background} onSelect={setBackground} />
         </section>
@@ -177,7 +172,7 @@ export default function Home() {
           </div>
           {sheets > 1 && <div className="page-nav"><button disabled={!pageIndex} onClick={() => setPageIndex((value) => value - 1)}>Hoja anterior</button><span>{pageIndex + 1} de {sheets}</span><button disabled={pageIndex >= sheets - 1} onClick={() => setPageIndex((value) => value + 1)}>Hoja siguiente</button></div>}
           <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} mode={editMode} onMode={setEditMode} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
-          <ExportBar count={expandedPhotos.length} busy={busy} hasErrors={hasErrors} onExport={generatePdf} />
+          <ExportBar count={expandedPhotos.length} busy={busy} hasErrors={false} onExport={generatePdf} />
         </section>
       </div>
     </main>

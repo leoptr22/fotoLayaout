@@ -7,6 +7,9 @@ export const backgrounds = [
   { id: "charcoal", name: "Carbón" },
   { id: "dots", name: "Puntos" },
   { id: "cmyk", name: "CMYK" },
+  { id: "pastel", name: "Acuarela pastel" },
+  { id: "geometry", name: "Geometría" },
+  { id: "confetti", name: "Confeti" },
 ];
 
 export function BackgroundPicker({ selected, onSelect }: { selected: string; onSelect: (id: string) => void }) {
