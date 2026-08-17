@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Header } from "./components/Header";
 import { TemplatePicker, templates } from "./components/TemplatePicker";
 import { PhotoUploader, type PhotoItem } from "./components/PhotoUploader";
@@ -9,9 +9,7 @@ import { SheetPreview } from "./components/SheetPreview";
 import { ExportBar } from "./components/ExportBar";
 import { PhotoAdjuster } from "./components/PhotoAdjuster";
 import { BackgroundPicker } from "./components/BackgroundPicker";
-import { OperationsPanel, printPresets, type OrderData } from "./components/OperationsPanel";
-
-type HistoryItem = { id: string; customer: string; copies: number; total: number; time: string };
+import { OperationsPanel, printPresets } from "./components/OperationsPanel";
 
 export default function Home() {
   const [template, setTemplate] = useState("classic");
@@ -25,13 +23,8 @@ export default function Home() {
   const [preset, setPreset] = useState("10x15");
   const [cropMarks, setCropMarks] = useState(true);
   const [bleed, setBleed] = useState(false);
-  const [unitPrice, setUnitPrice] = useState(3500);
   const [pageIndex, setPageIndex] = useState(0);
-  const [order, setOrder] = useState<OrderData>({ customer: "", phone: "", orderNumber: "", delivery: "", notes: "" });
-  const [history, setHistory] = useState<HistoryItem[]>([]);
   const sheetRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => { try { setHistory(JSON.parse(localStorage.getItem("rojas-job-history") || "[]")); } catch { /* historial opcional */ } }, []);
 
   const addPhotos = (files: File[]) => {
     const available = Math.max(0, 20 - photos.length);
@@ -107,7 +100,6 @@ export default function Home() {
     setCropMarks(true);
     setBleed(false);
     setPageIndex(0);
-    setOrder({ customer: "", phone: "", orderNumber: "", delivery: "", notes: "" });
   };
 
   const expandedPhotos = useMemo(() => photos.flatMap((photo) => Array.from({ length: photo.copies }, (_, copy) => ({ ...photo, instanceId: `${photo.id}-${copy}` }))), [photos]);
@@ -119,7 +111,6 @@ export default function Home() {
   const preflight = [
     photos.length ? { level: "ok" as const, text: `${expandedPhotos.length} copias distribuidas en ${sheets} hoja${sheets === 1 ? "" : "s"}.` } : { level: "error" as const, text: "Faltan fotografías para imprimir." },
     lowResolution.length ? { level: "warn" as const, text: `${lowResolution.length} foto${lowResolution.length === 1 ? "" : "s"} podría verse pixelada en ${currentPreset.name}.` } : { level: "ok" as const, text: "Resolución adecuada para el tamaño elegido." },
-    order.customer.trim() ? { level: "ok" as const, text: `Pedido identificado para ${order.customer.trim()}.` } : { level: "warn" as const, text: "Conviene completar el nombre del cliente." },
     { level: "ok" as const, text: cropMarks ? "Guías de corte activadas." : "Composición sin guías de corte." },
   ];
   const hasErrors = preflight.some((item) => item.level === "error");
@@ -132,12 +123,6 @@ export default function Home() {
     setEditMode("move");
     setPageIndex(0);
     setPhotos((current) => current.map((photo) => ({ ...photo, x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100 })));
-  };
-
-  const rememberJob = () => {
-    const next = [{ id: crypto.randomUUID(), customer: order.customer, copies: expandedPhotos.length, total: sheets * unitPrice, time: new Date().toLocaleString("es-AR", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" }) }, ...history].slice(0, 8);
-    setHistory(next);
-    localStorage.setItem("rojas-job-history", JSON.stringify(next));
   };
 
   const generatePdf = async () => {
@@ -161,20 +146,10 @@ export default function Home() {
       }
       setPageIndex(originalPage);
       pdf.save(`${title.trim().replace(/\s+/g, "-").toLowerCase() || "fotoforma"}.pdf`);
-      rememberJob();
     } finally {
       sheet.classList.remove("is-exporting");
       setBusy(false);
     }
-  };
-
-  const generateTicket = async () => {
-    if (!photos.length) return;
-    const { jsPDF } = await import("jspdf");
-    const ticket = new jsPDF({ unit: "mm", format: [80, 150] });
-    ticket.setFontSize(15); ticket.text("ROJAS IMPRESIONES", 8, 13);
-    ticket.setFontSize(9); ticket.text(`Pedido: ${order.orderNumber || "Sin número"}`, 8, 24); ticket.text(`Cliente: ${order.customer || "Sin nombre"}`, 8, 31); ticket.text(`WhatsApp: ${order.phone || "—"}`, 8, 38); ticket.text(`Entrega: ${order.delivery ? new Date(order.delivery).toLocaleString("es-AR") : "A coordinar"}`, 8, 45); ticket.line(8, 51, 72, 51); ticket.text(`${expandedPhotos.length} copias · ${currentPreset.name}`, 8, 59); ticket.text(`${sheets} hoja${sheets === 1 ? "" : "s"} Super A3`, 8, 66); ticket.setFontSize(13); ticket.text(`TOTAL: $${(sheets * unitPrice).toLocaleString("es-AR")}`, 8, 77); ticket.setFontSize(8); ticket.text(`Notas: ${order.notes || "—"}`, 8, 88, { maxWidth: 64 }); ticket.text("Las fotografías no se guardan en el historial.", 8, 128); ticket.save(`pedido-${order.orderNumber || Date.now()}.pdf`);
-    rememberJob();
   };
 
   const selected = templates.find((item) => item.id === template) ?? templates[0];
@@ -195,7 +170,7 @@ export default function Home() {
           <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} onMove={movePhoto} onCopies={setCopies} />
           <EditorToolbar title={title} onTitle={setTitle} fit={fit} onFit={setFit} />
           <BackgroundPicker selected={background} onSelect={setBackground} />
-          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} cropMarks={cropMarks} bleed={bleed} onCropMarks={setCropMarks} onBleed={setBleed} order={order} onOrder={setOrder} unitPrice={unitPrice} onUnitPrice={setUnitPrice} preflight={preflight} onAutoArrange={autoArrange} history={history} onClearHistory={() => { setHistory([]); localStorage.removeItem("rojas-job-history"); }} />
+          <OperationsPanel preset={preset} onPreset={setPreset} totalCopies={expandedPhotos.length} sheets={sheets} cropMarks={cropMarks} bleed={bleed} onCropMarks={setCropMarks} onBleed={setBleed} preflight={preflight} onAutoArrange={autoArrange} />
         </section>
 
         <section className="preview-panel" aria-label="Vista previa">
@@ -208,7 +183,7 @@ export default function Home() {
           </div>
           {sheets > 1 && <div className="page-nav"><button disabled={!pageIndex} onClick={() => setPageIndex((value) => value - 1)}>Hoja anterior</button><span>{pageIndex + 1} de {sheets}</span><button disabled={pageIndex >= sheets - 1} onClick={() => setPageIndex((value) => value + 1)}>Hoja siguiente</button></div>}
           <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} mode={editMode} onMode={setEditMode} onZoom={(zoom) => updateSelected({ zoom })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100 })} />
-          <ExportBar count={expandedPhotos.length} busy={busy} hasErrors={hasErrors} onTicket={generateTicket} onExport={generatePdf} />
+          <ExportBar count={expandedPhotos.length} busy={busy} hasErrors={hasErrors} onExport={generatePdf} />
         </section>
       </div>
     </main>
