@@ -174,7 +174,7 @@ export default function Home() {
             <SheetPreview ref={sheetRef} photos={visiblePhotos} template={template} background={background} title={title} fit={fit} editMode={editMode} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onCrop={setPhotoCrop} onResize={setPhotoSize} bleed={bleed} />
           </div>
           {sheets > 1 && <div className="page-nav"><button disabled={!pageIndex} onClick={() => setPageIndex((value) => value - 1)}>Hoja anterior</button><span>{pageIndex + 1} de {sheets}</span><button disabled={pageIndex >= sheets - 1} onClick={() => setPageIndex((value) => value + 1)}>Hoja siguiente</button></div>}
-          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} mode={editMode} onMode={setEditMode} onZoom={(zoom) => updateSelected({ zoom })} onDimensions={(widthCm, heightCm) => updateSelected({ widthCm, heightCm })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100, widthCm: null, heightCm: null })} />
+          <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} mode={editMode} onMode={setEditMode} onZoom={(zoom) => updateSelected({ zoom })} onDimensions={(widthCm, heightCm) => updateSelected({ widthCm, heightCm, ...((selectedPhoto?.widthCm === null || selectedPhoto?.heightCm === null) && widthCm !== null && heightCm !== null ? { moveX: 5, moveY: 5 } : {}) })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100, widthCm: null, heightCm: null })} />
           <ExportBar count={expandedPhotos.length} busy={busy} hasErrors={false} onExport={generatePdf} />
         </section>
       </div>
