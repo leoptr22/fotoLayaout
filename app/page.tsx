@@ -134,7 +134,10 @@ export default function Home() {
         pdf.addImage(canvas.toDataURL("image/jpeg", 0.94), "JPEG", 0, 0, 329, 483);
       }
       setPageIndex(originalPage);
-      pdf.save(`${title.trim().replace(/\s+/g, "-").toLowerCase() || "fotoforma"}.pdf`);
+      const safeTitle = title.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9\s_-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").toLowerCase();
+      const today = new Date();
+      const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+      pdf.save(`${safeTitle || `fotos-super-a3-${date}`}.pdf`);
     } finally {
       sheet.classList.remove("is-exporting");
       setBusy(false);
