@@ -57,16 +57,6 @@ export default function Home() {
     if (selectedId === id) setSelectedId(photos.find((photo) => photo.id !== id)?.id ?? null);
   };
 
-  const movePhoto = (index: number, direction: -1 | 1) => {
-    setPhotos((current) => {
-      const target = index + direction;
-      if (target < 0 || target >= current.length) return current;
-      const copy = [...current];
-      [copy[index], copy[target]] = [copy[target], copy[index]];
-      return copy;
-    });
-  };
-
   const setPhotoPosition = (id: string, x: number, y: number) => {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, moveX: x, moveY: y } : photo));
   };
@@ -82,8 +72,6 @@ export default function Home() {
   const setPhotoFreeform = (id: string, widthCm: number, heightCm: number, moveX: number, moveY: number) => {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, widthCm, heightCm, moveX, moveY } : photo));
   };
-
-  const setCopies = (id: string, copies: number) => setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, copies } : photo));
 
   const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "moveX" | "moveY" | "zoom" | "frameWidth" | "frameHeight" | "widthCm" | "heightCm">>) => {
     if (!selectedId) return;
@@ -163,7 +151,7 @@ export default function Home() {
             <p>Elegí una composición, cargá hasta 20 fotos y acomodá cada encuadre antes de generar el PDF listo para imprimir.</p>
           </div>
           <TemplatePicker selected={template} onSelect={setTemplate} />
-          <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} onMove={movePhoto} onCopies={setCopies} />
+          <PhotoUploader photos={photos} onAdd={addPhotos} onRemove={removePhoto} />
           <OperationsPanel totalCopies={expandedPhotos.length} sheets={sheets} bleed={bleed} onBleed={setBleed} onAutoArrange={autoArrange} />
           <EditorToolbar title={title} onTitle={setTitle} fit={fit} onFit={setFit} />
           <BackgroundPicker selected={background} onSelect={setBackground} />
