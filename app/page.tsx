@@ -79,6 +79,10 @@ export default function Home() {
     setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, frameWidth, frameHeight } : photo));
   };
 
+  const setPhotoFreeform = (id: string, widthCm: number, heightCm: number, moveX: number, moveY: number) => {
+    setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, widthCm, heightCm, moveX, moveY } : photo));
+  };
+
   const setCopies = (id: string, copies: number) => setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, copies } : photo));
 
   const updateSelected = (changes: Partial<Pick<PhotoItem, "x" | "y" | "moveX" | "moveY" | "zoom" | "frameWidth" | "frameHeight" | "widthCm" | "heightCm">>) => {
@@ -171,7 +175,7 @@ export default function Home() {
             <span className="size-badge">SUPER A3 · HOJA {pageIndex + 1}/{sheets}</span>
           </div>
           <div className="sheet-stage">
-            <SheetPreview ref={sheetRef} photos={visiblePhotos} template={template} background={background} title={title} fit={fit} editMode={editMode} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onCrop={setPhotoCrop} onResize={setPhotoSize} bleed={bleed} />
+            <SheetPreview ref={sheetRef} photos={visiblePhotos} template={template} background={background} title={title} fit={fit} editMode={editMode} selectedId={selectedId} onSelect={setSelectedId} onPosition={setPhotoPosition} onCrop={setPhotoCrop} onResize={setPhotoSize} onFreeform={setPhotoFreeform} bleed={bleed} />
           </div>
           {sheets > 1 && <div className="page-nav"><button disabled={!pageIndex} onClick={() => setPageIndex((value) => value - 1)}>Hoja anterior</button><span>{pageIndex + 1} de {sheets}</span><button disabled={pageIndex >= sheets - 1} onClick={() => setPageIndex((value) => value + 1)}>Hoja siguiente</button></div>}
           <PhotoAdjuster photo={selectedPhoto} index={selectedIndex} total={photos.length} mode={editMode} onMode={setEditMode} onZoom={(zoom) => updateSelected({ zoom })} onDimensions={(widthCm, heightCm) => updateSelected({ widthCm, heightCm, ...((selectedPhoto?.widthCm === null || selectedPhoto?.heightCm === null) && widthCm !== null && heightCm !== null ? { moveX: 5, moveY: 5 } : {}) })} onReset={() => updateSelected({ x: 50, y: 50, moveX: 0, moveY: 0, zoom: 1, frameWidth: 100, frameHeight: 100, widthCm: null, heightCm: null })} />
