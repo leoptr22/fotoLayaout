@@ -44,6 +44,11 @@
 .drag-instruction{display:flex;align-items:center;gap:8px;min-width:175px;padding:6px 10px;background:#eef9fa;border:1px dashed var(--cyan);color:var(--ink)}.drag-instruction>div{display:flex;flex-direction:column}.drag-instruction strong{font-size:9px;text-transform:uppercase}.drag-instruction span{font-size:8px;color:var(--muted);margin-top:2px}
 @media(max-width:1000px){.app-shell{grid-template-columns:1fr}}
 
+/* La plantilla Polaroid siempre conserva la grilla recta, aun después de editar otras plantillas. */
+.template-polaroid .photo-composition>.photo-cell,
+.template-polaroid .photo-composition>.photo-cell.custom-dimensions{position:relative!important;grid-column:auto!important;grid-row:auto!important;place-self:stretch!important;width:100%!important;height:100%!important;left:auto!important;top:auto!important;aspect-ratio:auto!important;transform:none!important}
+.template-polaroid .photo-composition>.photo-cell:nth-child(even){transform:none!important}
+
 /* Polaroid: 15 marcos exactos de 10 x 8 cm; imagen interior de 7 x 7 cm. */
 .paper.template-polaroid{padding:0;position:relative}
 .template-polaroid .paper-title{position:absolute;z-index:2;top:3%;left:4.407%;right:4.407%;margin:0;padding:0 0 1.5%;height:auto}
