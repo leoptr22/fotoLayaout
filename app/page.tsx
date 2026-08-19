@@ -117,14 +117,18 @@ export default function Home() {
         import("html2canvas"),
         import("jspdf"),
       ]);
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: [329, 483] });
+      const polaroidLandscape = template === "polaroid";
+      const pdfWidth = polaroidLandscape ? 483 : 329;
+      const pdfHeight = polaroidLandscape ? 329 : 483;
+      const orientation = polaroidLandscape ? "landscape" : "portrait";
+      const pdf = new jsPDF({ orientation, unit: "mm", format: [pdfWidth, pdfHeight] });
       const originalPage = pageIndex;
       for (let index = 0; index < sheets; index += 1) {
         setPageIndex(index);
         await new Promise((resolve) => setTimeout(resolve, 100));
         const canvas = await html2canvas(sheet, { scale: 2, useCORS: true, backgroundColor: "#e9edef", onclone: (documentClone) => { documentClone.querySelectorAll(".drag-hint,.resize-handle").forEach((element) => element.remove()); documentClone.querySelectorAll(".selected-photo").forEach((element) => element.classList.remove("selected-photo")); } });
-        if (index) pdf.addPage([329, 483], "portrait");
-        pdf.addImage(canvas.toDataURL("image/jpeg", 0.94), "JPEG", 0, 0, 329, 483);
+        if (index) pdf.addPage([pdfWidth, pdfHeight], orientation);
+        pdf.addImage(canvas.toDataURL("image/jpeg", 0.94), "JPEG", 0, 0, pdfWidth, pdfHeight);
       }
       setPageIndex(originalPage);
       const safeTitle = title.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9\s_-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").toLowerCase();
