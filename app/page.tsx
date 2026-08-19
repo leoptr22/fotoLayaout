@@ -117,17 +117,15 @@ export default function Home() {
         import("html2canvas"),
         import("jspdf"),
       ]);
-      const polaroidLandscape = template === "polaroid";
-      const pdfWidth = polaroidLandscape ? 483 : 329;
-      const pdfHeight = polaroidLandscape ? 329 : 483;
-      const orientation = polaroidLandscape ? "landscape" : "portrait";
-      const pdf = new jsPDF({ orientation, unit: "mm", format: [pdfWidth, pdfHeight] });
+      const pdfWidth = 329;
+      const pdfHeight = 483;
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: [pdfWidth, pdfHeight] });
       const originalPage = pageIndex;
       for (let index = 0; index < sheets; index += 1) {
         setPageIndex(index);
         await new Promise((resolve) => setTimeout(resolve, 100));
         const canvas = await html2canvas(sheet, { scale: 2, useCORS: true, backgroundColor: "#e9edef", onclone: (documentClone) => { documentClone.querySelectorAll(".drag-hint,.resize-handle").forEach((element) => element.remove()); documentClone.querySelectorAll(".selected-photo").forEach((element) => element.classList.remove("selected-photo")); } });
-        if (index) pdf.addPage([pdfWidth, pdfHeight], orientation);
+        if (index) pdf.addPage([pdfWidth, pdfHeight], "portrait");
         pdf.addImage(canvas.toDataURL("image/jpeg", 0.94), "JPEG", 0, 0, pdfWidth, pdfHeight);
       }
       setPageIndex(originalPage);

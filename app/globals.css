@@ -49,14 +49,14 @@
 .template-polaroid .photo-composition>.photo-cell.custom-dimensions{position:relative!important;grid-column:auto!important;grid-row:auto!important;place-self:stretch!important;width:100%!important;height:100%!important;left:auto!important;top:auto!important;aspect-ratio:auto!important;transform:none!important}
 .template-polaroid .photo-composition>.photo-cell:nth-child(even){transform:none!important}
 
-/* Polaroid: Super A3 horizontal, 15 marcos de 8 x 10 cm e imagen de 7 x 7 cm. */
-.paper.template-polaroid{padding:0;position:relative;aspect-ratio:483/329;width:min(100%,1060px);height:auto;max-height:100%}
-.template-polaroid .paper-title{position:absolute;z-index:2;top:1.5%;left:8.592%;right:8.592%;margin:0;padding:0 0 1%;height:auto}
-.template-polaroid .photo-composition{position:absolute;left:8.592%;top:8.5%;width:82.816%;height:91.185%;padding:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:0;overflow:hidden}
-.template-polaroid.no-title .photo-composition{top:4.407%}
+/* Polaroid: Super A3 siempre vertical, 15 marcos y área de imagen exacta de 7 x 7 cm. */
+.paper.template-polaroid{padding:0;position:relative;aspect-ratio:329/483;width:auto;height:min(100%,860px);max-width:100%}
+.template-polaroid .paper-title{position:absolute;z-index:2;top:.35%;left:13.526%;right:13.526%;margin:0;padding:0 0 .6%;height:auto}
+.template-polaroid .photo-composition{position:absolute;left:13.526%;top:2.07%;width:72.948%;height:97.93%;padding:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);gap:0;overflow:hidden}
+.template-polaroid.no-title .photo-composition{top:1.035%}
 .template-polaroid .photo-cell{width:100%;height:100%;padding:0;box-sizing:border-box;transform:none;box-shadow:inset 0 0 0 1px #dce3e4;background:#fff;place-self:stretch}
 .template-polaroid .photo-cell:nth-child(even){transform:none}
-.template-polaroid .photo-cell img{position:absolute;left:6.25%;top:5%;width:87.5%;height:70%;margin:0;object-fit:cover}
+.template-polaroid .photo-cell img{position:absolute;left:6.25%;top:4.228%;width:87.5%;height:73.996%;margin:0;object-fit:cover}
 
 /* Medidas personalizadas por fotografía */
 .photo-composition{position:relative;contain:layout paint;isolation:isolate}
