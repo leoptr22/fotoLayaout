@@ -1,6 +1,6 @@
 export const templates = [
   { id: "classic", name: "Cuadrícula", mark: "▦", note: "Orden limpio" },
-  { id: "polaroid", name: "Polaroid", mark: "◇", note: "Nostalgia casual" },
+  { id: "polaroid", name: "Polaroid", mark: "◇", note: "15 fotos · 10 × 8 cm" },
   { id: "editorial", name: "Editorial", mark: "▥", note: "Ritmo de revista" },
   { id: "mosaic", name: "Mosaico", mark: "▤", note: "Dinámico" },
   { id: "gallery", name: "Galería", mark: "▩", note: "Con aire" },

@@ -93,8 +93,9 @@ export default function Home() {
   };
 
   const expandedPhotos = useMemo(() => photos.flatMap((photo) => Array.from({ length: photo.copies }, (_, copy) => ({ ...photo, instanceId: `${photo.id}-${copy}` }))), [photos]);
-  const sheets = Math.max(1, Math.ceil(expandedPhotos.length / 20));
-  const visiblePhotos = expandedPhotos.slice(pageIndex * 20, pageIndex * 20 + 20);
+  const photosPerSheet = template === "polaroid" ? 15 : 20;
+  const sheets = Math.max(1, Math.ceil(expandedPhotos.length / photosPerSheet));
+  const visiblePhotos = expandedPhotos.slice(pageIndex * photosPerSheet, pageIndex * photosPerSheet + photosPerSheet);
 
   const autoArrange = () => {
     const portraitCount = photos.filter((photo) => photo.pixelHeight > photo.pixelWidth).length;
