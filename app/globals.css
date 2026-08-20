@@ -51,16 +51,20 @@
 
 /* Polaroid: Super A3 siempre vertical, 15 marcos y área de imagen exacta de 7 x 7 cm. */
 .paper.template-polaroid{padding:0;position:relative;aspect-ratio:329/483;width:auto;height:min(100%,860px);max-width:100%}
-.template-polaroid .paper-title{position:absolute;z-index:2;top:.35%;left:13.526%;right:13.526%;margin:0;padding:0 0 .6%;height:auto}
-.template-polaroid .photo-composition{position:absolute;left:13.526%;top:2.07%;width:72.948%;height:97.93%;padding:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);gap:0;overflow:hidden}
-.template-polaroid.no-title .photo-composition{top:1.035%}
+.template-polaroid .paper-title{position:absolute;z-index:2;top:.7%;left:7.447%;right:7.447%;margin:0;padding:0 0 .7%;height:4%;background:inherit}
+.template-polaroid .photo-composition{position:absolute;left:7.447%;top:6.211%;width:85.106%;height:91.718%;padding:0;display:grid;grid-template-columns:repeat(3,28.571%);grid-template-rows:repeat(5,19.187%);justify-content:space-between;align-content:space-between;gap:0;overflow:hidden}
+.template-polaroid.no-title .photo-composition{top:2.07%;height:95.86%;grid-template-rows:repeat(5,18.359%)}
 .template-polaroid .photo-cell{width:100%;height:100%;padding:0;box-sizing:border-box;transform:none;box-shadow:inset 0 0 0 1px #dce3e4;background:#fff;place-self:stretch}
 .template-polaroid .photo-cell:nth-child(even){transform:none}
-.template-polaroid .photo-cell img{position:absolute;left:6.25%;top:4.228%;width:87.5%;height:73.996%;margin:0;object-fit:cover}
+.template-polaroid .photo-cell img{position:absolute;left:6.25%;top:4.706%;width:87.5%;height:82.353%;margin:0;object-fit:cover}
+
+/* El tamaño se modifica únicamente desde los casilleros de ancho y alto. */
+.resize-handle{display:none!important}
+.photo-cell.selected-photo::before,.photo-cell.custom-dimensions.selected-photo::before{content:"AJUSTÁ EL TAMAÑO CON LOS CASILLEROS"}
 
 /* Medidas personalizadas por fotografía */
 .photo-composition{position:relative;contain:layout paint;isolation:isolate}
-.auto-button-wide{width:100%;justify-content:center}.dimension-control{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#f8fbfb;border:1px solid var(--line)}.dimension-control>span{font-size:7px;font-weight:800;text-transform:uppercase;white-space:nowrap}.dimension-control label{display:flex;align-items:center;gap:3px;font-size:7px;font-weight:700}.dimension-control input{width:54px;border:1px solid var(--line);background:#fff;padding:6px 4px;font-size:9px}.dimension-control b{font-size:7px;color:var(--muted)}.dimension-control button{border:0;background:transparent;color:var(--cyan);font-size:7px;font-weight:800;cursor:pointer;white-space:nowrap}.photo-composition>.photo-cell.custom-dimensions{position:absolute;grid-column:auto!important;grid-row:auto!important;place-self:auto;z-index:auto;transform:none!important}.photo-composition>.photo-cell.custom-dimensions.selected-photo{z-index:6}.photo-cell.custom-dimensions .resize-handle{display:none}.photo-cell.custom-dimensions.selected-photo::before{content:"MEDIDA PERSONALIZADA"}
+.auto-button-wide{width:100%;justify-content:center}.dimension-control{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#f8fbfb;border:1px solid var(--line)}.dimension-control>span{font-size:7px;font-weight:800;text-transform:uppercase;white-space:nowrap}.dimension-control label{display:flex;align-items:center;gap:3px;font-size:7px;font-weight:700}.dimension-control input{width:54px;border:1px solid var(--line);background:#fff;padding:6px 4px;font-size:9px}.dimension-control b{font-size:7px;color:var(--muted)}.dimension-control button{border:0;background:transparent;color:var(--cyan);font-size:7px;font-weight:800;cursor:pointer;white-space:nowrap}.photo-composition>.photo-cell.custom-dimensions{position:absolute;grid-column:auto!important;grid-row:auto!important;place-self:auto;z-index:auto;transform:none!important}.photo-composition>.photo-cell.custom-dimensions.selected-photo{z-index:6}.photo-cell.custom-dimensions .resize-handle{display:none}.photo-cell.custom-dimensions.selected-photo::before{content:"AJUSTÁ EL TAMAÑO CON LOS CASILLEROS"}
 @media(max-width:1200px){.dimension-control{flex-wrap:wrap}.dimension-control>span{width:100%}}
 
 /* Operación de impresión: copias, organización y control técnico */
@@ -115,6 +119,6 @@
 .app-shell{grid-template-columns:minmax(300px,1fr) minmax(0,3fr);max-width:none;width:100%}
 .controls-panel{padding-left:clamp(18px,2vw,32px);padding-right:clamp(18px,2vw,32px)}
 .photo-cell{place-self:center}
-.resize-handle{position:absolute;z-index:6;border:0;background:var(--cyan);padding:0;touch-action:none}.resize-right{width:8px;height:42%;right:2px;top:29%;cursor:ew-resize;border-radius:8px}.resize-bottom{height:8px;width:42%;bottom:2px;left:29%;cursor:ns-resize;border-radius:8px}.resize-corner{width:14px;height:14px;right:2px;bottom:2px;cursor:nwse-resize;border:2px solid #fff;box-shadow:0 1px 5px #0003}.selected-photo::before{content:"ARRASTRÁ LOS BORDES PARA CAMBIAR EL TAMAÑO";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);z-index:5;background:#fff;color:var(--ink);font-size:5px;font-weight:800;white-space:nowrap;padding:3px 5px;pointer-events:none}.selected-photo:hover .drag-hint{top:42%}
+.resize-handle{position:absolute;z-index:6;border:0;background:var(--cyan);padding:0;touch-action:none}.resize-right{width:8px;height:42%;right:2px;top:29%;cursor:ew-resize;border-radius:8px}.resize-bottom{height:8px;width:42%;bottom:2px;left:29%;cursor:ns-resize;border-radius:8px}.resize-corner{width:14px;height:14px;right:2px;bottom:2px;cursor:nwse-resize;border:2px solid #fff;box-shadow:0 1px 5px #0003}.selected-photo::before{content:"AJUSTÁ EL TAMAÑO CON LOS CASILLEROS";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);z-index:5;background:#fff;color:var(--ink);font-size:5px;font-weight:800;white-space:nowrap;padding:3px 5px;pointer-events:none}.selected-photo:hover .drag-hint{top:42%}
 @media(max-width:1300px) and (min-width:1001px){.template-grid{grid-template-columns:repeat(2,1fr)}.intro-copy h1{font-size:38px}.control-section{padding:22px 18px}}
 @media(max-width:1000px){.app-shell{grid-template-columns:1fr}}
